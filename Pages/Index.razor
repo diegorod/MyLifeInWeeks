@@ -1,0 +1,63 @@
+﻿@page "/"
+@inject HttpClient Http
+@inject NavigationManager Nav
+
+<div class="text-center">
+    <EditForm Model="Model" OnValidSubmit="HandleSubmit">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+        <div class="mb-3">
+            <MatDatePicker Label="Birthday" name="BirthDate" TValue="DateTime" @bind-Value="Model.BirthDate" Format="MM/dd/yyyy" Outlined="true" />
+        </div>
+        <div class="mb-3">
+            <MatSelect Label="Gender" name="Gender" @bind-Value="Model.Gender" Outlined="true">
+                <MatOptionString Value="Overall">Overall</MatOptionString>
+                <MatOptionString Value="Male">Male</MatOptionString>
+                <MatOptionString Value="Female">Female</MatOptionString>
+            </MatSelect>
+        </div>
+        <div class="mb-3">
+            <MatSelect Label="Country or Region" name="LifeExpectancy" @bind-Value="Model.LifeExp" Outlined="true">
+                @foreach (var item in ListOfLifeExp)
+                {
+                    var lifeExp = item.Overall;
+                    switch (Model.Gender)
+                    {
+                        case "Male":
+                            lifeExp = item.Male ?? item.Overall;
+                            break;
+                        case "Female":
+                            lifeExp = item.Female ?? item.Overall;
+                            break;
+                        default:
+                            break;
+                    }
+                    <MatOption TValue="decimal" Value="@lifeExp">@item.CountryOrRegion</MatOption>
+                }
+            </MatSelect>
+        </div>
+        <div class="mb-3">
+            <MatButton Label="Load" Type="submit" Icon="send" Raised="true" Outlined="true"></MatButton>
+        </div>
+    </EditForm>
+</div>
+
+
+@code {
+
+    public MyLife Model { get; set; } = new MyLife();
+    public List<LifeExp> ListOfLifeExp = new List<LifeExp>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListOfLifeExp = await Http.GetFromJsonAsync<List<LifeExp>>("data/life-exp.json");
+        ListOfLifeExp = ListOfLifeExp.OrderBy(x => x.CountryOrRegion).ToList();
+    }
+
+    private void HandleSubmit()
+    {
+        var url = Uri.EscapeUriString($"/{Model.BirthDate.ToString("yyyy-MM-dd")}/{Model.LifeExp}/{Model.Gender}");
+        Nav.NavigateTo(url);
+    }
+
+}

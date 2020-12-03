@@ -1,0 +1,60 @@
+@page "/{BirthDate:datetime}/{LifeExpectancy:decimal}/{Gender}"
+
+@if (Loading)
+{
+    <MatProgressCircle Indeterminate="true" Size="MatProgressCircleSize.Large" />
+}
+else
+{
+    @if (Life.GenderSelected)
+    {
+        <div class="text-center">Weeks in the life of a @Life.Age year old @Life.Gender living in a country or region with a life expectancy of @Life.LifeExp years.</div>
+    }
+    else
+    {
+        <div class="text-center">Weeks in the life of a @Life.Age year old living in a country or region with a life expectancy of @Life.LifeExp years.</div>
+    }
+
+    <div class="text-center">You have an expected @Life.WeeksLeft weeks left to live - or @Life.PercLeft%.</div>
+
+    <div class="week-wrapper">
+        @foreach (var week in Weeks)
+        {
+            var weekCss = week.Lived ? "week-lived" : "week-lived-not";
+            if (week.CurrentWeek)
+            {
+                weekCss = "week-current";
+            }
+            <span class="week @weekCss" title="@($"{week.StartDate.ToShortDateString()} - {week.EndDate.ToShortDateString()}")" />
+        }
+    </div>
+}
+
+
+@code {
+    public List<Week> Weeks { get; set; } = new List<Week>();
+    [Parameter]
+    public DateTime BirthDate { get; set; }
+    [Parameter]
+    public string Gender { get; set; }
+    [Parameter]
+    public decimal LifeExpectancy { get; set; }
+
+    public MyLife Life { get; set; } = new MyLife();
+    private bool Loading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Weeks = await Task.FromResult(Life.GetLifeWeeks());
+        Loading = false;
+        StateHasChanged();
+    }
+
+    protected override void OnParametersSet()
+    {
+        Life.BirthDate = BirthDate;
+        Life.Gender = Gender;
+        Life.LifeExp = LifeExpectancy;
+    }
+
+}
