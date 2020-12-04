@@ -10,11 +10,12 @@ jobs:
       steps:
         # Uses github's checkout action to checkout code from the master branch
         - uses: actions/checkout@v2
-        # Sets up .Net Core SKD 5.0.1
+        # Sets up .Net Core SKD 5.0.100
+        # Release json: https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/5.0/releases.json
         - name: Setup .NET Core SDK
           uses: actions/setup-dotnet@v1.7.2
           with:
-            dotnet-version: 5.0.1
+            dotnet-version: 5.0.100
         # Publishes Blazor project to the release-folder
         - name: Publish .NET Core Project         
           run: dotnet publish MyLifeInWeeks.csproj -c Release -o release --nologo
