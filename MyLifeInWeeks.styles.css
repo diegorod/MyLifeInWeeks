@@ -61,9 +61,6 @@
     }
 
 @media (max-width: 767.98px) {
-    .top-row:not(.auth)[b-nzk97znf8c] {
-        display: none;
-    }
 
     .top-row.auth[b-nzk97znf8c] {
         justify-content: space-between;

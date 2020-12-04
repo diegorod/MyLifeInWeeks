@@ -97,7 +97,7 @@
       "url": "_framework\/dotnet.5.0.0.js"
     },
     {
-      "hash": "sha256-EJaTsMgGPS5A+W4Zwe5ACqtRdEPhRYwger1dVQjJKvA=",
+      "hash": "sha256-GeH4zrWz9cBJGfjNtqKbZ8wJq2Xyd9VaqdwqOfPC1WY=",
       "url": "MyLifeInWeeks.styles.css"
     },
     {
@@ -293,5 +293,5 @@
       "url": "_framework\/blazor.webassembly.js"
     }
   ],
-  "version": "FCfwKV8a"
+  "version": "y2vlsgYS"
 };
