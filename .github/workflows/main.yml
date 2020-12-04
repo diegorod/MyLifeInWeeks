@@ -10,6 +10,9 @@ jobs:
       steps:
         # Uses github's checkout action to checkout code from the master branch
         - uses: actions/checkout@v2
+        # Changes the base-tag in index.html from '/' to 'ImdbTVShowProgression' to match Github pages repository subdirectory
+        - name: Change base-tag in index.html from / to MyLifeInWeeks before publish to maintain hash integrity
+          run: sed -i 's/<base href="\/" \/>/<base href="\/MyLifeInWeeks\/" \/>/g' wwwroot/index.html
         # Sets up .Net Core SKD 5.0.100
         # Release json: https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/5.0/releases.json
         - name: Setup .NET Core SDK
@@ -19,9 +22,6 @@ jobs:
         # Publishes Blazor project to the release-folder
         - name: Publish .NET Core Project         
           run: dotnet publish MyLifeInWeeks.csproj -c Release -o release --nologo
-        # Changes the base-tag in index.html from '/' to 'ImdbTVShowProgression' to match Github pages repository subdirectory
-        - name: Change base-tag in index.html from / to MyLifeInWeeks
-          run: sed -i 's/<base href="\/" \/>/<base href="\/MyLifeInWeeks\/" \/>/g' release/wwwroot/index.html
         # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
         - name: Add .nojekyll file
           run: touch release/wwwroot/.nojekyll
