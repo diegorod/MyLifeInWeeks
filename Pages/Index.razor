@@ -57,7 +57,7 @@
     private void HandleSubmit()
     {
         var url = Nav.ToAbsoluteUri(Uri.EscapeUriString($"/{Model.BirthDate.ToString("yyyy-MM-dd")}/{Model.LifeExp}/{Model.Gender}")).ToString();
-        Console.WriteLine($"Navigating to: {url}")
+        Console.WriteLine($"Navigating to: {url}");
         Nav.NavigateTo(url);
     }
 
