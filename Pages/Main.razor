@@ -49,16 +49,18 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+
+    }
+
+    protected override async void OnParametersSet()
+    {
+        Life.BirthDate = BirthDate; 
+        Life.Gender = Gender;
+        Life.LifeExp = LifeExpectancy;
         Weeks = await Task.FromResult(Life.GetLifeWeeks());
         Loading = false;
         StateHasChanged();
-    }
 
-    protected override void OnParametersSet()
-    {
-        Life.BirthDate = BirthDate;
-        Life.Gender = Gender;
-        Life.LifeExp = LifeExpectancy;
     }
 
 }
