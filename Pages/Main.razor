@@ -16,7 +16,7 @@ else
     }
 
     <div class="text-center">You have an expected @Life.WeeksLeft weeks left to live - or @Life.PercLeft%.</div>
-
+    <MatSlider @bind-Value="@GridDimsSum" ValueMin="-6" ValueMax="10" Label="Display size"></MatSlider>
     <div class="week-wrapper">
         @foreach (var week in Weeks)
         {
@@ -25,7 +25,7 @@ else
             {
                 weekCss = "week-current";
             }
-            <span class="week @weekCss" title="@($"{week.StartDate.ToShortDateString()} - {week.EndDate.ToShortDateString()}")" />
+            <span class="week @weekCss" style="@($"width:{GridWeekWidth}px; height:{GridWeekHeight}px")" title="@($"{week.StartDate.ToShortDateString()} - {week.EndDate.ToShortDateString()}")" />
         }
     </div>
 }
@@ -39,6 +39,10 @@ else
     public string Gender { get; set; }
     [Parameter]
     public decimal LifeExpectancy { get; set; }
+
+    public int GridWeekWidth => 10 + GridDimsSum;
+    public int GridWeekHeight => 10 + GridDimsSum;
+    public int GridDimsSum { get; set; } = 0;
 
     public MyLife Life { get; set; } = new MyLife();
     private bool Loading = true;
